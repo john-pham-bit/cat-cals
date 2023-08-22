@@ -1,0 +1,19 @@
+{
+  "catTypes": [
+    "typical-neutered",
+    "typical-intact",
+    "typical-prone-to-gain",
+    "diet"
+  ],
+  "catTypeLabels": [
+    "Typical pet, neutered or spayed",
+    "Typical pet, intact",
+    "Typical pet, prone to gaining weight",
+    "Pet in need of weight loss"
+  ],
+  "weightThresholds": [5, 7.5, 10, 12.5, 15, 17.5, 20],
+  "typical-neutered": [157, 210, 260, 298, 354, 396, 440],
+  "typical-intact": [183, 245, 303, 362, 413, 462, 513],
+  "typical-prone-to-gain": [131, 175, 216, 258, 295, 330, 367],
+  "diet": [105, 140, 173, 207, 236, 264, 293]
+}
