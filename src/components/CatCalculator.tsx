@@ -2,6 +2,7 @@ import { useState } from "react";
 import CatForm from "./CatForm";
 import CatResult from "./CatResult";
 import { CatType } from "../utils/CalculateCals";
+import CalorieTable from "./CalorieTable";
 
 function CatCalculator() {
   const [catType, setNewCatType] = useState<CatType>("typical-neutered");
@@ -9,17 +10,18 @@ function CatCalculator() {
 
   return (
     <>
-      <div className="w-full">
-        <div className="mb-8 w-full">
-          <CatForm
-            catType={catType}
-            setNewCatType={setNewCatType}
-            setNewCatWeight={setNewCatWeight}
-          />
-        </div>
-        <div className="w-full">
+      <div className="flex h-full flex-col justify-between">
+        <div>
+          <div className="mb-8">
+            <CatForm
+              catType={catType}
+              setNewCatType={setNewCatType}
+              setNewCatWeight={setNewCatWeight}
+            />
+          </div>
           <CatResult catType={catType} catWeight={catWeight} />
         </div>
+        <CalorieTable catType={catType} />
       </div>
     </>
   );
