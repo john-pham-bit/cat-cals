@@ -4,8 +4,8 @@ import { CatType } from "../utils/CalculateCals";
 
 type CatFormProps = {
   catType: CatType;
-  setNewCatType: (newCatType: CatType) => void;
-  setNewCatWeight: (newCatWeight: number) => void;
+  setNewCatType: React.Dispatch<React.SetStateAction<CatType>>;
+  setNewCatWeight: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const CatForm: FC<CatFormProps> = ({
@@ -29,6 +29,12 @@ const CatForm: FC<CatFormProps> = ({
     e.preventDefault();
   }
 
+  function handleNewCatType(e: React.ChangeEvent<HTMLSelectElement>) {
+    setNewCatType((prevCatType) => {
+      return e.target.value as CatType;
+    });
+  }
+
   return (
     <>
       <form
@@ -43,7 +49,7 @@ const CatForm: FC<CatFormProps> = ({
           name="cat-type"
           id="cat-type"
           value={catType}
-          onChange={(e) => setNewCatType(e.target.value as CatType)}
+          onChange={handleNewCatType}
           className="rounded-lg border-2 border-black bg-slate-50 p-1.5 text-xl"
         >
           {catTypes.map((catTypeOption, i) => {
