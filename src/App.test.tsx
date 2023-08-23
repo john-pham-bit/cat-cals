@@ -1,8 +1,14 @@
-import { render, screen } from "@testing-library/react";
+import { findByText, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ReactElement } from "react";
 
 import App from "./App";
+import { CatType } from "./utils/CalculateCals";
+
+const NEUTERED: CatType = "typical-neutered";
+const INTACT: CatType = "typical-intact";
+const GAIN: CatType = "typical-prone-to-gain";
+const DIET: CatType = "diet";
 
 function setup(jsx: ReactElement) {
   return {
@@ -25,60 +31,49 @@ describe("App", () => {
     const { user } = setup(<App />);
 
     const catWeightField = screen.getByLabelText(/Cat Weight/);
+    const recommendationSection =
+      screen.getByText(/recommendation/).parentElement;
 
-    await user.selectOptions(
-      screen.getByLabelText(/Cat Type/),
-      screen.getByText(/neutered/),
-    );
+    await user.selectOptions(screen.getByLabelText(/Cat Type/), [NEUTERED]);
 
     await user.clear(catWeightField);
     await user.click(catWeightField);
     await user.keyboard("5");
-    expect(screen.getByText(/157/)).toBeInTheDocument();
+    expect(recommendationSection).toHaveTextContent(/157/);
 
     await user.clear(catWeightField);
     await user.click(catWeightField);
     await user.keyboard("10");
-    expect(screen.getByText(/260/)).toBeInTheDocument();
+    expect(recommendationSection).toHaveTextContent(/260/);
 
     await user.clear(catWeightField);
     await user.click(catWeightField);
     await user.keyboard("14.2");
-    expect(screen.getByText(/336.08/)).toBeInTheDocument();
+    expect(recommendationSection).toHaveTextContent(/336.08/);
   });
 
   it("changing cat type updates feeding recommendation correctly", async () => {
     const { user } = setup(<App />);
 
     const catWeightField = screen.getByLabelText(/Cat Weight/);
+    const recommendationSection =
+      screen.getByText(/recommendation/).parentElement;
 
     await user.clear(catWeightField);
     await user.click(catWeightField);
     await user.keyboard("10");
 
-    await user.selectOptions(
-      screen.getByLabelText(/Cat Type/),
-      screen.getByText(/neutered/),
-    );
-    expect(screen.getByText(/260/)).toBeInTheDocument();
+    await user.selectOptions(screen.getByLabelText(/Cat Type/), [NEUTERED]);
+    expect(recommendationSection).toHaveTextContent(/260/);
 
-    await user.selectOptions(
-      screen.getByLabelText(/Cat Type/),
-      screen.getByText(/intact/),
-    );
-    expect(screen.getByText(/303/)).toBeInTheDocument();
+    await user.selectOptions(screen.getByLabelText(/Cat Type/), [INTACT]);
+    expect(recommendationSection).toHaveTextContent(/303/);
 
-    await user.selectOptions(
-      screen.getByLabelText(/Cat Type/),
-      screen.getByText(/prone to gain/),
-    );
-    expect(screen.getByText(/216/)).toBeInTheDocument();
+    await user.selectOptions(screen.getByLabelText(/Cat Type/), [GAIN]);
+    expect(recommendationSection).toHaveTextContent(/216/);
 
-    await user.selectOptions(
-      screen.getByLabelText(/Cat Type/),
-      screen.getByText(/weight loss/),
-    );
-    expect(screen.getByText(/173/)).toBeInTheDocument();
+    await user.selectOptions(screen.getByLabelText(/Cat Type/), [DIET]);
+    expect(recommendationSection).toHaveTextContent(/173/);
   });
 
   it.todo(
@@ -86,25 +81,27 @@ describe("App", () => {
     async () => {
       const { user } = setup(<App />);
 
-      await user.selectOptions(
-        screen.getByLabelText(/Cat Type/),
-        screen.getByText(/neutered/),
-      );
+      await user.selectOptions(screen.getByLabelText(/Cat Type/), [NEUTERED]);
+      expect(
+        await findByText(screen.getByRole("table"), /neutered/),
+      ).toBeInTheDocument();
 
-      await user.selectOptions(
-        screen.getByLabelText(/Cat Type/),
-        screen.getByText(/intact/),
-      );
+      await user.selectOptions(screen.getByLabelText(/Cat Type/), [INTACT]);
 
-      await user.selectOptions(
-        screen.getByLabelText(/Cat Type/),
-        screen.getByText(/prone to gain/),
-      );
+      // chart's CSS animation delay seems to be causing this test to fail
+      expect(
+        await findByText(screen.getByRole("table"), /intact/),
+      ).toBeInTheDocument();
 
-      await user.selectOptions(
-        screen.getByLabelText(/Cat Type/),
-        screen.getByText(/weight loss/),
-      );
+      await user.selectOptions(screen.getByLabelText(/Cat Type/), [GAIN]);
+      expect(
+        await findByText(screen.getByRole("table"), /prone to gain/),
+      ).toBeInTheDocument();
+
+      await user.selectOptions(screen.getByLabelText(/Cat Type/), [DIET]);
+      expect(
+        await findByText(screen.getByRole("table"), /weight loss/),
+      ).toBeInTheDocument();
     },
   );
 });
