@@ -30,7 +30,7 @@ const CatForm: FC<CatFormProps> = ({
   }
 
   function handleNewCatType(e: React.ChangeEvent<HTMLSelectElement>) {
-    setNewCatType((prevCatType) => {
+    setNewCatType(() => {
       return e.target.value as CatType;
     });
   }
