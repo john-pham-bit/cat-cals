@@ -1,6 +1,10 @@
 import { FC, useState } from "react";
 import { CatType } from "../utils/CalculateCals";
 import CalorieThresholds from "../data/CalThresholds.json";
+import catImage1 from "../assets/cat1.png";
+import catImage2 from "../assets/cat2.png";
+import catImage3 from "../assets/cat3.png";
+import catImage4 from "../assets/cat4.png";
 
 type CalorieTableProps = {
   catType: CatType;
@@ -32,6 +36,40 @@ const CatForm: FC<CalorieTableProps> = ({ catType }) => {
     return { weight, calories: calThresholds[i], id: crypto.randomUUID() };
   });
 
+  const catTypeToCatImage = new Map<CatType, React.ReactElement>();
+  catTypeToCatImage.set(
+    "typical-neutered",
+    <CatFormImage
+      image={catImage1}
+      altText="An orange cat."
+      styling="h-44 -translate-x-8 -translate-y-28"
+    />,
+  );
+  catTypeToCatImage.set(
+    "typical-intact",
+    <CatFormImage
+      image={catImage2}
+      altText="An green cat."
+      styling="h-40 -translate-x-8 -translate-y-28"
+    />,
+  );
+  catTypeToCatImage.set(
+    "typical-prone-to-gain",
+    <CatFormImage
+      image={catImage3}
+      altText="An gray cat."
+      styling="h-44 -translate-x-8 -translate-y-28"
+    />,
+  );
+  catTypeToCatImage.set(
+    "diet",
+    <CatFormImage
+      image={catImage4}
+      altText="A cat in a shirt."
+      styling="h-52 -translate-x-24 -translate-y-36"
+    />,
+  );
+
   function getAnimation() {
     if (catType == displayCatType) {
       return "animate-dropin";
@@ -55,18 +93,22 @@ const CatForm: FC<CalorieTableProps> = ({ catType }) => {
   return (
     <>
       <div
-        className={`flex flex-col justify-center p-2
+        className={`relative flex flex-col justify-center p-2
         ${getAnimation()}`}
         onAnimationEnd={onAnimationEnd}
       >
-        <table className="border-collapse">
+        {catTypeToCatImage.get(displayCatType)}
+        <table className="z-10 border-collapse">
           <colgroup>
             <col span={1} className="w-1/2" />
             <col span={1} className="w-1/2" />
           </colgroup>
           <thead>
             <tr>
-              <th className="text-xl font-bold" colSpan={2}>
+              <th
+                className="border-2 border-black bg-gray-500 text-xl font-bold text-white"
+                colSpan={2}
+              >
                 {getLabelFromType(displayCatType)}
               </th>
             </tr>
@@ -95,6 +137,24 @@ const CatForm: FC<CalorieTableProps> = ({ catType }) => {
           </tbody>
         </table>
       </div>
+    </>
+  );
+};
+
+type CatFormImageProps = {
+  image: string;
+  altText: string;
+  styling: string;
+};
+
+const CatFormImage: FC<CatFormImageProps> = ({ image, altText, styling }) => {
+  return (
+    <>
+      <img
+        src={image}
+        alt={altText}
+        className={`absolute right-0 top-0 z-0 ${styling}`}
+      />
     </>
   );
 };
