@@ -43,7 +43,11 @@ const CatForm: FC<CalorieTableProps> = ({ catType }) => {
   );
   catTypeToCatImage.set(
     "typical-intact",
-    <CatFormImage image={catImage2} altText="An green cat." styling="h-40" />,
+    <CatFormImage
+      image={catImage2}
+      altText="An green cat."
+      styling="h-40 translate-x-[20%]"
+    />,
   );
   catTypeToCatImage.set(
     "typical-prone-to-gain",
@@ -54,7 +58,7 @@ const CatForm: FC<CalorieTableProps> = ({ catType }) => {
     <CatFormImage
       image={catImage4}
       altText="A cat in a shirt."
-      styling="h-52 -translate-x-16 -translate-y-8"
+      styling="h-52 -translate-x-[20%] -translate-y-8"
     />,
   );
 
@@ -93,7 +97,7 @@ const CatForm: FC<CalorieTableProps> = ({ catType }) => {
         onAnimationEnd={onTableAnimationEnd}
       >
         <div id="animated-cat-image" className={`relative`}>
-          <div className="absolute right-0 top-0 z-0 h-40 -translate-x-8 translate-y-8">
+          <div className="absolute right-0 top-0 z-0 h-40 -translate-x-[20%] translate-y-8">
             {catTypeToCatImage.get(displayCatType)}
           </div>
         </div>

@@ -39,7 +39,7 @@ const CatForm: FC<CatFormProps> = ({
     <>
       <form
         onSubmit={handleSubmit}
-        className="flex w-full flex-col p-1.5"
+        className="flex w-full flex-col p-1.5 lg:max-w-sm"
         action=""
       >
         <label htmlFor="cat-type" className="text-xl">

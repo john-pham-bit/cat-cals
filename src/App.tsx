@@ -6,7 +6,7 @@ function App() {
     <>
       <div className="flex h-screen w-screen flex-col overflow-hidden bg-sky-200">
         <Header />
-        <div className="mx-3 mt-10 flex h-full flex-col justify-center">
+        <div className="mx-3 mt-10 flex h-full flex-col justify-center sm:mx-16 lg:mx-56">
           <CatCalculator />
         </div>
       </div>

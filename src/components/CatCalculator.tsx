@@ -10,7 +10,7 @@ function CatCalculator() {
 
   return (
     <>
-      <div className="flex h-full flex-col justify-between">
+      <div className="flex h-full flex-col justify-between sm:w-full lg:max-w-screen-md">
         <div>
           <div className="mb-8">
             <CatForm
@@ -21,7 +21,9 @@ function CatCalculator() {
           </div>
           <CatResult catType={catType} catWeight={catWeight} />
         </div>
-        <CalorieTable catType={catType} />
+        <div className="sm:mb-10">
+          <CalorieTable catType={catType} />
+        </div>
       </div>
     </>
   );
