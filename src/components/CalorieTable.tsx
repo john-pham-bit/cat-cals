@@ -39,54 +39,49 @@ const CatForm: FC<CalorieTableProps> = ({ catType }) => {
   const catTypeToCatImage = new Map<CatType, React.ReactElement>();
   catTypeToCatImage.set(
     "typical-neutered",
-    <CatFormImage
-      image={catImage1}
-      altText="An orange cat."
-      styling="h-44 -translate-x-8 -translate-y-28"
-    />,
+    <CatFormImage image={catImage1} altText="An orange cat." styling="h-44" />,
   );
   catTypeToCatImage.set(
     "typical-intact",
-    <CatFormImage
-      image={catImage2}
-      altText="An green cat."
-      styling="h-40 -translate-x-8 -translate-y-28"
-    />,
+    <CatFormImage image={catImage2} altText="An green cat." styling="h-40" />,
   );
   catTypeToCatImage.set(
     "typical-prone-to-gain",
-    <CatFormImage
-      image={catImage3}
-      altText="An gray cat."
-      styling="h-44 -translate-x-8 -translate-y-28"
-    />,
+    <CatFormImage image={catImage3} altText="An gray cat." styling="h-44" />,
   );
   catTypeToCatImage.set(
     "diet",
     <CatFormImage
       image={catImage4}
       altText="A cat in a shirt."
-      styling="h-52 -translate-x-24 -translate-y-36"
+      styling="h-52 -translate-x-16 -translate-y-8"
     />,
   );
 
-  function getAnimation() {
+  function getTableAnimation() {
     if (catType == displayCatType) {
       return "animate-dropin";
     }
     return "animate-dropout";
   }
 
-  function onAnimationEnd(e: React.AnimationEvent<HTMLDivElement>) {
+  function onTableAnimationEnd(e: React.AnimationEvent<HTMLDivElement>) {
     e.currentTarget.classList.remove("animate-dropin");
     e.currentTarget.classList.remove("animate-dropout");
 
+    const animatedCatImage = document.querySelector("#animated-cat-image");
     if (catType != displayCatType) {
+      // animate-dropout ended
       setDisplayCatType(catType);
       e.currentTarget.classList.add("opacity-0");
+
+      animatedCatImage?.classList.remove("animate-catimage");
     } else {
-      // full animation is over when the displayCatType has been updated
+      // animate-dropin ended
       e.currentTarget.classList.remove("opacity-0");
+
+      // animate the cat image again
+      animatedCatImage?.classList.add("animate-catimage");
     }
   }
 
@@ -94,10 +89,14 @@ const CatForm: FC<CalorieTableProps> = ({ catType }) => {
     <>
       <div
         className={`relative flex flex-col justify-center p-2
-        ${getAnimation()}`}
-        onAnimationEnd={onAnimationEnd}
+        ${getTableAnimation()}`}
+        onAnimationEnd={onTableAnimationEnd}
       >
-        {catTypeToCatImage.get(displayCatType)}
+        <div id="animated-cat-image" className={`relative`}>
+          <div className="absolute right-0 top-0 z-0 h-40 -translate-x-8 translate-y-8">
+            {catTypeToCatImage.get(displayCatType)}
+          </div>
+        </div>
         <table className="z-10 border-collapse">
           <colgroup>
             <col span={1} className="w-1/2" />
@@ -150,11 +149,7 @@ type CatFormImageProps = {
 const CatFormImage: FC<CatFormImageProps> = ({ image, altText, styling }) => {
   return (
     <>
-      <img
-        src={image}
-        alt={altText}
-        className={`absolute right-0 top-0 z-0 ${styling}`}
-      />
+      <img src={image} alt={altText} className={`${styling}`} />
     </>
   );
 };
