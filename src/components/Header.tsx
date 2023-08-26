@@ -13,7 +13,7 @@ function Header() {
         </div>
         <div className="flex h-3/4 flex-row items-center">
           <a
-            href="https://github.com/john-pham-bit"
+            href="https://github.com/john-pham-bit/cat-cals"
             className="flex h-full flex-row items-center"
             target="_blank"
           >
